@@ -8,7 +8,7 @@
 #define COLS (98+2)
 
 #define DEAD 0
-#define LIVE 1
+#define ALIVE 1
 
 #define INTERVAL (100000)   // in microseconds
 
@@ -95,17 +95,17 @@ int main(int argc, char *argv[])
                 if (now[r-1][c+1]) l++; else d++;
 
                 /*
-                  rules:
-                  1. live cell with fewer than two live neighbours dies
-                  2. live cell with more than three live neighbours dies
-                  3. live cell with two or three live neighbours lives on
-                  4. dead cell with exactly three live neighbours becomes live
-                */
+                 * rules:
+                 * 1. alive cell with fewer than two living neighbours dies (starvation)
+                 * 2. alive cell with more than three living neighbours dies (overpopulation)
+                 * 3. alive cell with two or three living neighbours lives on
+                 * 4. dead cell with exactly three living neighbours becomes alive (reproduction)
+                 */
 
                      if (  now[r][c] && l<2 ) next[r][c] = DEAD;
                 else if (  now[r][c] && l>3 ) next[r][c] = DEAD;
-                else if (  now[r][c] && l>=2 && l<=3 ) next[r][c] = LIVE;
-                else if ( !now[r][c] && (l==3) ) next[r][c] = LIVE;
+                else if (  now[r][c] && l>=2 && l<=3 ) next[r][c] = ALIVE;
+                else if ( !now[r][c] && (l==3) ) next[r][c] = ALIVE;
             }
         }
 
