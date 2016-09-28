@@ -4,12 +4,15 @@
 #include <unistd.h>
 #include <string.h>
 
-#define ROWS (48+2)
-#define COLS (98+2)
+#define MARGIN (1)
+#define ROWS (48 + 2*MARGIN)
+#define COLS (98 + 2*MARGIN)
+
 
 #define DEAD 0
 #define ALIVE 1
 
+#define CELLCHAR "*"
 #define INTERVAL (100000)   // in microseconds
 
 void clearscreen(void);
@@ -41,23 +44,25 @@ int main(int argc, char *argv[])
     {
         initstate = fopen(argv[1],"r");
 
-        if (!initstate)
+        if (initstate == NULL)
         {
-            printf( "\n couldn't open file '%s', terminating.\n\n", argv[1] );
-            exit(EXIT_FAILURE);
+            fprintf(stderr, "couldn't open file \"%s\", terminating.\n", argv[1]);
+            return 1;
         }
         else
         {
-            for (r=1; r<ROWS-1; r++)
-            {
-                for (c=1; c<COLS; c++)  // not COLS-1 because we expect the newline character!
-                {
-                    fscanf(initstate,"%1c",&cell);
-
-                    if (cell=='.')
-                        now[r][c] = 0;
-                    else if (cell=='+')
-                        now[r][c] = 1;
+            /* FIXME unsafe, no bounds checking */
+            r = c = MARGIN;
+            while ( (cell=fgetc(initstate)) != EOF ) {
+                 if (cell=='\n') {
+                    ++r;
+                    c = MARGIN;
+                } else if (cell==' ') {
+                    now[r][c] = DEAD;
+                    ++c;
+                } else {
+                    now[r][c] = ALIVE;
+                    ++c;
                 }
             }
         }
@@ -152,7 +157,7 @@ void printlife( int matrix[ROWS][COLS] )
         for ( c=0; c<COLS; c++)
         {
             if (matrix[r][c])
-                printf("+");
+                printf(CELLCHAR);
             else
                 printf(" ");
         }
