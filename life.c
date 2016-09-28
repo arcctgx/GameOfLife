@@ -25,7 +25,7 @@ void printlife( int matrix[ROWS][COLS] );
 int main(int argc, char *argv[])
 {
     int now[ROWS][COLS], next[ROWS][COLS];
-    int l, d, r, c, g=0;
+    int l, r, c, g=0;
     FILE *initstate;
     char cell;
 
@@ -89,17 +89,17 @@ int main(int argc, char *argv[])
         {
             for ( c=1; c<COLS-1; c++ )
             {
-                /* count neighbours */
-                l=0; d=0;
+                /* count living neighbours */
+                l=0;
 
-                if (now[r+1][c-1]) l++; else d++;
-                if (now[r+1][c+0]) l++; else d++;
-                if (now[r+1][c+1]) l++; else d++;
-                if (now[r+0][c-1]) l++; else d++;
-                if (now[r+0][c+1]) l++; else d++;
-                if (now[r-1][c-1]) l++; else d++;
-                if (now[r-1][c+0]) l++; else d++;
-                if (now[r-1][c+1]) l++; else d++;
+                if (now[r+1][c-1] == ALIVE) ++l;
+                if (now[r+1][c+0] == ALIVE) ++l;
+                if (now[r+1][c+1] == ALIVE) ++l;
+                if (now[r+0][c-1] == ALIVE) ++l;
+                if (now[r+0][c+1] == ALIVE) ++l;
+                if (now[r-1][c-1] == ALIVE) ++l;
+                if (now[r-1][c+0] == ALIVE) ++l;
+                if (now[r-1][c+1] == ALIVE) ++l;
 
                 /*
                  * rules:
@@ -129,12 +129,10 @@ int main(int argc, char *argv[])
 }
 
 
-
 int zero_one(void)
 {
     return( rand()%2 );
 }
-
 
 
 void clearscreen(void)  /* works only on "ANSI terminals", whatever that means */
@@ -144,7 +142,6 @@ void clearscreen(void)  /* works only on "ANSI terminals", whatever that means *
 
     return;
 }
-
 
 
 void printlife( int matrix[ROWS][COLS] )
