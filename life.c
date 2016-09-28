@@ -38,13 +38,13 @@ int main(int argc, char *argv[])
     {
         srand(time(NULL));
 
-        for ( r=1; r<ROWS-1; r++ )
-            for ( c=1; c<COLS-1; c++ )
+        for ( r=1; r<ROWS-1; ++r )
+            for ( c=1; c<COLS-1; ++c )
                 now[r][c] = zero_one();
     }
     else if (argc==2)
     {
-        initstate = fopen(argv[1],"r");
+        initstate = fopen(argv[1], "r");
 
         if (initstate == NULL)
         {
@@ -78,17 +78,14 @@ int main(int argc, char *argv[])
     sleep(2);
 
 
-    while(1)
-    {
-        g++;
+    while (1) {
+        ++g;
 
         /* zero the next generation matrix: */
-        memset(next,0,ROWS*COLS*sizeof(int));
+        memset(next, 0, ROWS*COLS*sizeof(int));
 
-        for ( r=1; r<ROWS-1; r++ )
-        {
-            for ( c=1; c<COLS-1; c++ )
-            {
+        for ( r=1; r<ROWS-1; ++r ) {
+            for ( c=1; c<COLS-1; ++c ) {
                 /* count living neighbours */
                 l=0;
 
@@ -109,15 +106,15 @@ int main(int argc, char *argv[])
                  * 4. dead cell with exactly three living neighbours becomes alive (reproduction)
                  */
 
-                     if (  now[r][c] && l<2 ) next[r][c] = DEAD;
-                else if (  now[r][c] && l>3 ) next[r][c] = DEAD;
-                else if (  now[r][c] && l>=2 && l<=3 ) next[r][c] = ALIVE;
-                else if ( !now[r][c] && (l==3) ) next[r][c] = ALIVE;
+                     if (now[r][c] == ALIVE && l < 2) next[r][c] = DEAD;
+                else if (now[r][c] == ALIVE && l > 3) next[r][c] = DEAD;
+                else if (now[r][c] == ALIVE && l >= 2 && l <= 3) next[r][c] = ALIVE;
+                else if (now[r][c] == DEAD && l == 3) next[r][c] = ALIVE;
             }
         }
 
         /* copy matrix next -> now: */
-        memcpy(now, next, sizeof(int)*ROWS*COLS);
+        memcpy(now, next, ROWS*COLS*sizeof(int));
 
         clearscreen();
         printf(" generation: %d\n", g);
@@ -139,8 +136,6 @@ void clearscreen(void)  /* works only on "ANSI terminals", whatever that means *
 {
     printf( "\033[2J" );
     printf( "\033[1;1H" );
-
-    return;
 }
 
 
@@ -159,6 +154,4 @@ void printlife( int matrix[ROWS][COLS] )
         putchar('\n');
     }
     putchar('\n');
-
-    return;
 }
