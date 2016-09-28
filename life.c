@@ -117,10 +117,7 @@ int main(int argc, char *argv[])
         }
 
         /* copy matrix next -> now: */
-        for (r=0; r<ROWS; r++)
-            for (c=0; c<COLS; c++)
-                now[r][c] = next[r][c];
-
+        memcpy(now, next, sizeof(int)*ROWS*COLS);
 
         clearscreen();
         printf(" generation: %d\n", g);
