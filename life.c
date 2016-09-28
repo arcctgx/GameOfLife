@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
@@ -13,7 +15,7 @@
 #define ALIVE 1
 
 #define CELLCHAR "*"
-#define INTERVAL (100000)   // in microseconds
+#define INTERVAL (100000)   /* usec, 0.1 second */
 
 void clearscreen(void);
 int zero_one(void);
@@ -28,7 +30,7 @@ int main(int argc, char *argv[])
     char cell;
 
 
-    // zero the initial matrix:
+    /* zero the initial matrix: */
     memset(now,0,ROWS*COLS*sizeof(int));
     
 
@@ -80,14 +82,14 @@ int main(int argc, char *argv[])
     {
         g++;
 
-        // zero the next generation matrix:
+        /* zero the next generation matrix: */
         memset(next,0,ROWS*COLS*sizeof(int));
 
         for ( r=1; r<ROWS-1; r++ )
         {
             for ( c=1; c<COLS-1; c++ )
             {
-                // count neighbours
+                /* count neighbours */
                 l=0; d=0;
 
                 if (now[r+1][c-1]) l++; else d++;
@@ -114,7 +116,7 @@ int main(int argc, char *argv[])
             }
         }
 
-        // copy matrix next -> now:
+        /* copy matrix next -> now: */
         for (r=0; r<ROWS; r++)
             for (c=0; c<COLS; c++)
                 now[r][c] = next[r][c];
@@ -138,7 +140,7 @@ int zero_one(void)
 
 
 
-void clearscreen(void)  // works only on "ANSI terminals", whatever that means
+void clearscreen(void)  /* works only on "ANSI terminals", whatever that means */
 {
     printf( "\033[2J" );
     printf( "\033[1;1H" );
