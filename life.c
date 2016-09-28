@@ -9,30 +9,27 @@
 #define MARGIN (1)
 #define ROWS (48 + 2*MARGIN)
 #define COLS (98 + 2*MARGIN)
-
-
 #define DEAD (0)
 #define ALIVE (1)
-
 #define CELLCHAR '*'
 #define INTERVAL (100000)   /* usec, 0.1 second */
 
+
 void clearscreen(void);
 int zero_one(void);
-void printlife( int matrix[ROWS][COLS] );
+void printlife(char matrix[ROWS][COLS]);
 
 
 int main(int argc, char *argv[])
 {
-    int now[ROWS][COLS], next[ROWS][COLS];
+    char now[ROWS][COLS], next[ROWS][COLS];
     int l, r, c, g=0;
     FILE *initstate;
     char cell;
 
 
     /* zero the initial matrix: */
-    memset(now,0,ROWS*COLS*sizeof(int));
-    
+    memset(now, 0, ROWS*COLS*sizeof(char));
 
     if (argc == 1) {
         srand(time(NULL));
@@ -75,7 +72,7 @@ int main(int argc, char *argv[])
         ++g;
 
         /* zero the next generation matrix: */
-        memset(next, 0, ROWS*COLS*sizeof(int));
+        memset(next, 0, ROWS*COLS*sizeof(char));
 
         for ( r=1; r<ROWS-1; ++r ) {
             for ( c=1; c<COLS-1; ++c ) {
@@ -107,7 +104,7 @@ int main(int argc, char *argv[])
         }
 
         /* copy matrix next -> now: */
-        memcpy(now, next, ROWS*COLS*sizeof(int));
+        memcpy(now, next, ROWS*COLS*sizeof(char));
 
         clearscreen();
         printf(" generation: %d\n", g);
@@ -132,7 +129,7 @@ void clearscreen(void)  /* works only on "ANSI terminals", whatever that means *
 }
 
 
-void printlife( int matrix[ROWS][COLS] )
+void printlife(char matrix[ROWS][COLS])
 {
     int r, c;
 
