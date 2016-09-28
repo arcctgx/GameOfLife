@@ -11,10 +11,10 @@
 #define COLS (98 + 2*MARGIN)
 
 
-#define DEAD 0
-#define ALIVE 1
+#define DEAD (0)
+#define ALIVE (1)
 
-#define CELLCHAR "*"
+#define CELLCHAR '*'
 #define INTERVAL (100000)   /* usec, 0.1 second */
 
 void clearscreen(void);
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
         usleep(INTERVAL);
     }
 
-    return(0);
+    return 0;
 }
 
 
@@ -151,20 +151,17 @@ void printlife( int matrix[ROWS][COLS] )
 {
     int r, c;
 
-    for ( r=0; r<ROWS; r++)
-    {
-        for ( c=0; c<COLS; c++)
-        {
-            if (matrix[r][c])
-                printf(CELLCHAR);
-            else
-                printf(" ");
+    for (r=0; r<ROWS; ++r) {
+        for (c=0; c<COLS; ++c) {
+            if (matrix[r][c] == ALIVE) {
+                putchar(CELLCHAR);
+            } else {
+                putchar(' ');
+            }
         }
-
-        printf("\n");
+        putchar('\n');
     }
-
-    printf("\n");
+    putchar('\n');
 
     return;
 }
