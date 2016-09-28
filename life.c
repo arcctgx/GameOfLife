@@ -34,32 +34,26 @@ int main(int argc, char *argv[])
     memset(now,0,ROWS*COLS*sizeof(int));
     
 
-    if (argc==1)
-    {
+    if (argc == 1) {
         srand(time(NULL));
 
-        for ( r=1; r<ROWS-1; ++r )
-            for ( c=1; c<COLS-1; ++c )
+        for (r=1; r<ROWS-1; ++r) {
+            for (c=1; c<COLS-1; ++c) {
                 now[r][c] = zero_one();
-    }
-    else if (argc==2)
-    {
-        initstate = fopen(argv[1], "r");
-
-        if (initstate == NULL)
-        {
+            }
+        }
+    } else if (argc == 2) {
+        if ((initstate = fopen(argv[1], "r")) == NULL) {
             fprintf(stderr, "couldn't open file \"%s\", terminating.\n", argv[1]);
             return 1;
-        }
-        else
-        {
+        } else {
             /* FIXME unsafe, no bounds checking */
             r = c = MARGIN;
-            while ( (cell=fgetc(initstate)) != EOF ) {
-                 if (cell=='\n') {
+            while ((cell = fgetc(initstate)) != EOF) {
+                 if (cell == '\n') {
                     ++r;
                     c = MARGIN;
-                } else if (cell==' ') {
+                } else if (cell == ' ') {
                     now[r][c] = DEAD;
                     ++c;
                 } else {
@@ -68,7 +62,6 @@ int main(int argc, char *argv[])
                 }
             }
         }
-
         fclose(initstate);
     }
 
